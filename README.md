@@ -1,143 +1,278 @@
 # VengeanceUI MCP Server
 
-An [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server for [VengeanceUI](https://github.com/Ashutoshx7/VengeanceUI) components. This server enables AI assistants like Claude, Cursor, and other MCP-enabled tools to browse, search, and retrieve VengeanceUI components directly from the GitHub repository.
+[![MCP](https://img.shields.io/badge/MCP-Server-blue)](https://modelcontextprotocol.io)
+[![VengeanceUI](https://img.shields.io/badge/VengeanceUI-Components-purple)](https://github.com/Ashutoshx7/VengeanceUI)
 
-## Features
+An [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that brings **129 beautiful VengeanceUI components** directly to your AI assistant! Browse, search, and retrieve component source code from the [VengeanceUI GitHub repository](https://github.com/Ashutoshx7/VengeanceUI) seamlessly within Claude Desktop, Cursor, or any MCP-enabled tool.
 
-- **Browse Components**: List all available VengeanceUI components with categories and descriptions
-- **Smart Search**: Search components by name, category, tags, or description with fuzzy matching
-- **Source Code Access**: Get complete component source code with metadata
-- **Category Filtering**: Explore components by category (Buttons, Cards, Forms, etc.)
-- **Component Metadata**: View detailed information including dependencies, tags, and source URLs
-- **Caching**: Built-in component cache for faster responses (5-minute refresh)
+## ✨ Features
 
-## Installation
+- 🎨 **129+ Components**: Access the complete VengeanceUI component library
+- 🔍 **Smart Search**: Search by name, category, tags, or description with fuzzy matching
+- 📦 **Full Source Code**: Get complete component code with metadata
+- 🗂️ **Category Filtering**: Browse by Buttons, Cards, Forms, Navigation, and more
+- 📊 **Component Metadata**: View dependencies, tags, file size, and source URLs
+- ⚡ **Smart Caching**: Built-in 5-minute cache for faster responses
+- 🔄 **Real-time Sync**: Components loaded directly from the latest GitHub repository
 
-### From Source
+## 🚀 Quick Start
 
-1. Clone this repository:
-```bash
-git clone <your-repo-url>
-cd "mcp VengeanceUI"
-```
+### Prerequisites
 
-2. Install dependencies:
-```bash
-npm install
-```
+- **Node.js**: v18 or higher (tested with v22.17.0)
+- **npm**: Latest version
+- **Claude Desktop** or **Cursor IDE** (or any MCP-compatible client)
 
-3. Build the project:
-```bash
-npm run build
-```
+### Installation
 
-## Configuration
+1. **Clone this repository:**
+   ```bash
+   git clone https://github.com/krockxz/VengeanceUI-MCP.git
+   cd VengeanceUI-MCP
+   ```
 
-### Claude Desktop
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-Add the following to your Claude Desktop configuration file:
+3. **Build the project:**
+   ```bash
+   npm run build
+   ```
 
-**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+   You should see:
+   ```
+   > vengeanceui-mcp-server@1.0.0 build
+   > tsc
+   ```
 
-```json
-{
-  "mcpServers": {
-    "vengeanceui": {
-      "command": "node",
-      "args": ["/absolute/path/to/mcp VengeanceUI/dist/server.js"],
-      "env": {
-        "GITHUB_TOKEN": "your-github-token-optional"
-      }
-    }
-  }
-}
-```
+4. **Verify the build:**
+   ```bash
+   ls -lh dist/server.js
+   ```
 
-### Cursor IDE
+## ⚙️ Configuration
 
-Create or edit `.cursor/mcp-servers.json` in your project:
+### For Claude Desktop
 
-```json
-{
-  "mcpServers": {
-    "vengeanceui": {
-      "command": "node",
-      "args": ["/absolute/path/to/mcp VengeanceUI/dist/server.js"],
-      "env": {
-        "GITHUB_TOKEN": "your-github-token-optional"
-      }
-    }
-  }
-}
-```
+1. **Locate your configuration file:**
+   - **Linux**: `~/.config/Claude/claude_desktop_config.json`
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
-### Environment Variables
+2. **Add the VengeanceUI server configuration:**
 
-- `GITHUB_TOKEN` (optional): GitHub personal access token for higher API rate limits
-- `NODE_ENV`: Set to `production` for production use
+   ```json
+   {
+     "mcpServers": {
+       "vengeanceui": {
+         "command": "node",
+         "args": ["/absolute/path/to/mcp VengeanceUI/dist/server.js"]
+       }
+     }
+   }
+   ```
 
-## Available Tools
+   > **⚠️ Important**: Replace `/absolute/path/to/` with your actual absolute path!
+   >
+   > **Example on Linux:**
+   > ```json
+   > "args": ["/home/kunal/Documents/mcp VengeanceUI/dist/server.js"]
+   > ```
 
-### `list_components`
-List all available VengeanceUI components.
+3. **Restart Claude Desktop:**
+   - **Linux**: Press `Ctrl + R` or fully restart the application
+   - **macOS/Windows**: Fully quit and restart Claude Desktop
+
+4. **Verify the server is running:**
+   - Look for the **🔨 tool icon** in the bottom-right corner of Claude Desktop
+   - Click it to see available MCP servers
+   - You should see **"VengeanceUI MCP Server"** listed
+
+### For Cursor IDE
+
+1. **Create or edit** `.cursor/mcp-servers.json` in your project:
+
+   ```json
+   {
+     "mcpServers": {
+       "vengeanceui": {
+         "command": "node",
+         "args": ["/absolute/path/to/mcp VengeanceUI/dist/server.js"]
+       }
+     }
+   }
+   ```
+
+2. **Restart Cursor IDE**
+
+### Optional: GitHub Token for Higher Rate Limits
+
+Adding a GitHub token increases API rate limits from **60 to 5000 requests/hour**.
+
+1. **Create a GitHub Personal Access Token:**
+   - Go to https://github.com/settings/tokens
+   - Click "Generate new token (classic)"
+   - Select scope: `public_repo` (read access to public repositories)
+   - Copy the generated token (starts with `ghp_`)
+
+2. **Update your configuration:**
+
+   ```json
+   {
+     "mcpServers": {
+       "vengeanceui": {
+         "command": "node",
+         "args": ["/absolute/path/to/mcp VengeanceUI/dist/server.js"],
+         "env": {
+           "GITHUB_TOKEN": "ghp_your_token_here"
+         }
+       }
+     }
+   }
+   ```
+
+3. **Restart your MCP client**
+
+## 🛠️ Available Tools
+
+The server provides **7 powerful tools** for working with VengeanceUI components:
+
+### 1. `list_components`
+List all available VengeanceUI components with their categories and descriptions.
 
 **Parameters:**
-- `category` (optional): Filter by category
+- `category` (optional): Filter by category (e.g., "Buttons", "Cards", "Forms")
 - `limit` (optional): Maximum number of components to return
 
-### `search_components`
-Search for components by name, category, tags, or description.
+**Example prompts:**
+- *"List all VengeanceUI components"*
+- *"Show me the first 20 components"*
+- *"List all components in the Buttons category"*
+
+---
+
+### 2. `search_components`
+Search for components using fuzzy matching across names, categories, tags, and descriptions.
 
 **Parameters:**
 - `query` (required): Search term
-- `limit` (optional): Maximum number of results (default: 10)
+- `limit` (optional): Maximum results to return (default: 10)
 
-### `get_component_code`
-Get the complete source code for a specific component.
+**Example prompts:**
+- *"Search for button components"*
+- *"Find animated card components"*
+- *"Search for gradient effects"*
+
+---
+
+### 3. `get_component_code`
+Retrieve the complete source code for a specific component with metadata.
 
 **Parameters:**
-- `component_name` (required): Name of the component
-- `include_metadata` (optional): Include component metadata (default: true)
+- `component_name` (required): Exact or partial component name
+- `include_metadata` (optional): Include metadata like tags, dependencies (default: true)
 
-### `get_components_by_category`
+**Example prompts:**
+- *"Get the code for AnimatedButton"*
+- *"Show me the source code for GradientCard"*
+- *"Get button.tsx code"*
+
+---
+
+### 4. `get_components_by_category`
 Get all components in a specific category.
 
 **Parameters:**
 - `category` (required): Component category name
 
-### `get_component_info`
-Get detailed information about a component.
+**Example prompts:**
+- *"Show all components in the Forms category"*
+- *"What's in the Navigation category?"*
+
+---
+
+### 5. `get_component_info`
+Get detailed metadata about a component including dependencies, file size, and tags.
 
 **Parameters:**
-- `component_name` (required): Name of the component
+- `component_name` (required): Component name
 
-### `list_categories`
-List all component categories with counts.
+**Example prompts:**
+- *"Get info for AnimatedButton"*
+- *"What are the dependencies for GradientCard?"*
 
-### `refresh_cache`
-Force refresh the component cache from GitHub.
+---
 
-## Usage Examples
+### 6. `list_categories`
+List all component categories with component counts.
 
-Once configured, you can use natural language prompts like:
+**Example prompts:**
+- *"List all categories"*
+- *"What categories are available in VengeanceUI?"*
 
-- "Show me all available VengeanceUI components"
-- "Find animated button components"
-- "Get the code for the GradientCard component"
-- "What components are in the Buttons category?"
-- "List all available categories"
-- "Get component info for AnimatedButton"
+---
 
-## Development
+### 7. `refresh_cache`
+Force refresh the component cache from the GitHub repository.
 
-### Running in Development Mode
+**Example prompts:**
+- *"Refresh the VengeanceUI component cache"*
+- *"Update the component list"*
+
+## 💡 Usage Examples
+
+Once configured in Claude Desktop, try these natural language prompts:
+
+### Discovery
+```
+"What VengeanceUI components are available?"
+"List all categories in VengeanceUI"
+"How many components are there in total?"
+```
+
+### Search
+```
+"Find all button components"
+"Search for gradient or animated components"
+"Show me navigation components"
+```
+
+### Get Code
+```
+"Get the code for button.tsx"
+"Show me the AnimatedButton component"
+"I need the source code for GradientCard"
+```
+
+### Browse by Category
+```
+"Show all components in the Buttons category"
+"What forms components are available?"
+"List all navigation components"
+```
+
+### Component Details
+```
+"Get detailed info for AnimatedButton"
+"What dependencies does the GradientCard component have?"
+"Show me the metadata for button.tsx"
+```
+
+## 🔧 Development
+
+### Development Mode
+
+Run the server in watch mode:
 
 ```bash
 npm run dev
 ```
 
-### Building
+### Build
+
+Compile TypeScript to JavaScript:
 
 ```bash
 npm run build
@@ -145,41 +280,90 @@ npm run build
 
 ### Watch Mode
 
+Automatically rebuild on file changes:
+
 ```bash
 npm run watch
 ```
 
-## Project Structure
+## 📖 How It Works
+
+1. **Component Discovery**: The server connects to the VengeanceUI GitHub repository and scans the following directories:
+   - `registry/new-york/` - Main component registry
+   - `src/components/` - Source components
+
+2. **Intelligent Parsing**: 
+   - Extracts component names from filenames
+   - Parses code to detect categories, tags, and dependencies
+   - Analyzes JSDoc comments for descriptions
+   - Identifies animation, styling, and interaction patterns
+
+3. **Smart Caching**: 
+   - Components are cached for 5 minutes
+   - Reduces GitHub API calls
+   - Automatic refresh on cache expiration
+
+4. **MCP Integration**: 
+   - Implements the Model Context Protocol
+   - Exposes 7 tools via stdio transport
+   - Provides structured responses with metadata
+
+## 🐛 Troubleshooting
+
+### Server doesn't appear in Claude Desktop
+
+1. **Check configuration file syntax:**
+   ```bash
+   cat ~/.config/Claude/claude_desktop_config.json | jq .
+   ```
+   If `jq` shows an error, your JSON is malformed.
+
+2. **Verify the server file exists:**
+   ```bash
+   ls -lh "/absolute/path/to/mcp VengeanceUI/dist/server.js"
+   ```
+
+3. **Check Claude Desktop logs:**
+   ```bash
+   # Find log directory
+   find ~ -name "*Claude*" -type d 2>/dev/null | grep -i log
+   
+   # View logs
+   tail -f ~/.config/Claude/logs/mcp*.log
+   ```
+
+4. **Test the server manually:**
+   ```bash
+   cd "mcp VengeanceUI"
+   node dist/server.js
+   ```
+
+### No components are loading
+
+1. **Check GitHub API rate limits:**
+   - Without token: Limited to 60 requests/hour
+   - Solution: Add a GitHub token (see Configuration section)
+
+2. **Force refresh the cache:**
+   - Use the prompt: *"Refresh the VengeanceUI component cache"*
+
+### Components are outdated
+
+The cache refreshes every 5 minutes. To force an immediate refresh, use the `refresh_cache` tool via this prompt:
 
 ```
-.
-├── src/
-│   ├── server.ts           # Main MCP server implementation
-│   ├── componentLoader.ts  # GitHub component fetcher
-│   └── types.ts            # TypeScript type definitions
-├── dist/                   # Compiled JavaScript output
-├── package.json
-├── tsconfig.json
-└── README.md
+"Refresh the VengeanceUI component cache"
 ```
 
-## How It Works
+## 🙏 Acknowledgments
 
-1. **Component Loading**: The server fetches component information directly from the [VengeanceUI GitHub repository](https://github.com/Ashutoshx7/VengeanceUI)
-2. **Smart Parsing**: Analyzes component code to extract metadata, tags, dependencies, and categories
-3. **Caching**: Components are cached for 5 minutes to reduce API calls
-4. **MCP Protocol**: Uses the Model Context Protocol to expose tools to AI assistants
+- **[VengeanceUI](https://github.com/Ashutoshx7/VengeanceUI)** - For the incredible component library featuring beautiful, animated components
+- **[Model Context Protocol](https://modelcontextprotocol.io)** - For the server framework enabling AI assistant integration
+- **[shadcn-ui-mcp-server](https://github.com/sherifbutt/shadcn-ui-mcp-server)** - Inspiration for this project
 
-## Contributing
+## 🔗 Links
 
-Contributions are welcome! Please feel free to submit issues and pull requests.
+- **VengeanceUI Repository**: https://github.com/Ashutoshx7/VengeanceUI
+- **MCP Documentation**: https://modelcontextprotocol.io
+- **Issues & Support**: Open an issue in this repository
 
-## License
-
-MIT
-
-## Acknowledgments
-
-- [VengeanceUI](https://github.com/Ashutoshx7/VengeanceUI) for the amazing component library
-- [Model Context Protocol](https://modelcontextprotocol.io) for the server framework
-- Inspired by [shadcn-ui-mcp-server](https://github.com/sherifbutt/shadcn-ui-mcp-server)

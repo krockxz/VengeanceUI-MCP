@@ -16,7 +16,7 @@ export async function loadComponentsFromGitHub(): Promise<ComponentMetadata[]> {
 
   try {
     // List of directories to search for components
-    const searchPaths = ["components", "src/components", "app/components", "lib/components"];
+    const searchPaths = ["registry/new-york", "src/components"];
 
     for (const path of searchPaths) {
       try {
