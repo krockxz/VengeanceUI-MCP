@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "vengeanceui": {
+      "command": "node",
+      "args": ["/home/kunal/Documents/mcp VengeanceUI/dist/server.js"],
+      "env": {
+        "NODE_ENV": "production",
+        "GITHUB_TOKEN": "your-github-token-optional"
+      }
+    }
+  }
+}
